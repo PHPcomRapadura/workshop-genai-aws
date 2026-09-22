@@ -1,7 +1,7 @@
 # Participantes
 
-Adicione seu e-mail ao final da tabela para se inscrever.
+Adicione seu e-mail ou usuário do Telegram ao final da tabela para se inscrever.
 
-| E-mail |
+| Contato (e-mail ou Telegram) |
 | --- |
 | exemplo@wilcorrea.dev |

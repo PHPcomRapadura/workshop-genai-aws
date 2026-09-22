@@ -33,32 +33,33 @@ for (let headIndex = 0; headIndex < headLines.length; headIndex += 1) {
 }
 
 if (baseIndex !== baseLines.length || insertedIndex !== headLines.length - 2) {
-  throw new Error("Adicione o e-mail somente ao final da tabela.");
+  throw new Error("Adicione o contato somente ao final da tabela.");
 }
 
 const row = headLines[insertedIndex];
 const emailPattern = /^\|\s*([a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+)\s*\|$/i;
-const match = row.match(emailPattern);
+const telegramPattern = /^\|\s*(@[a-z0-9_]{5,32})\s*\|$/i;
+const match = row.match(emailPattern) ?? row.match(telegramPattern);
 
 if (!match || match[1].length > 254) {
-  throw new Error("Use o formato | seu-email@exemplo.com |.");
+  throw new Error("Use | seu-email@exemplo.com | ou | @seu_usuario |.");
 }
 
-const email = match[1].toLowerCase();
-const currentEmails = baseLines
-  .map((line) => line.match(emailPattern)?.[1]?.toLowerCase())
+const contact = match[1].toLowerCase();
+const currentContacts = baseLines
+  .map((line) => (line.match(emailPattern) ?? line.match(telegramPattern))?.[1]?.toLowerCase())
   .filter(Boolean);
 
-if (new Set(currentEmails).size !== currentEmails.length) {
-  throw new Error("A lista atual contém e-mails duplicados.");
+if (new Set(currentContacts).size !== currentContacts.length) {
+  throw new Error("A lista atual contém contatos duplicados.");
 }
 
-if (currentEmails.length >= 10) {
+if (currentContacts.length >= 10) {
   throw new Error("As 10 vagas já foram preenchidas.");
 }
 
-if (currentEmails.includes(email)) {
-  throw new Error("Este e-mail já está inscrito.");
+if (currentContacts.includes(contact)) {
+  throw new Error("Este contato já está inscrito.");
 }
 
-process.stdout.write(`Inscrição válida para a vaga ${currentEmails.length + 1} de 10.\n`);
+process.stdout.write(`Inscrição válida para a vaga ${currentContacts.length + 1} de 10.\n`);

@@ -49,5 +49,5 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
-          result="$(gh api --method PUT "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/merge" --field merge_method=squash --field commit_title="chore: add participant")"
+          result="$(gh api --method PUT "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/merge" --field merge_method=squash --field commit_title="chore: add participant contact")"
           jq -e '.merged == true' <<<"$result" >/dev/null
