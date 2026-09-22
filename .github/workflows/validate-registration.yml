@@ -1,0 +1,52 @@
+name: Validar inscrição
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: workshop-registrations-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-merge:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter validador confiável
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Validar alteração
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+
+          files="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files?per_page=100")"
+
+          if ! jq -e 'length == 1 and .[0].filename == "participantes.md" and .[0].status == "modified" and .[0].additions == 1 and .[0].deletions == 0' <<<"$files" >/dev/null; then
+            echo "O PR deve adicionar somente uma linha ao arquivo participantes.md."
+            exit 1
+          fi
+
+          blob_sha="$(jq -r '.[0].sha' <<<"$files")"
+          gh api "repos/$GITHUB_REPOSITORY/contents/participantes.md?ref=$DEFAULT_BRANCH" --jq '.content' | tr -d '\n' | base64 --decode > "$RUNNER_TEMP/base.md"
+          gh api "repos/$GITHUB_REPOSITORY/git/blobs/$blob_sha" --jq '.content' | tr -d '\n' | base64 --decode > "$RUNNER_TEMP/head.md"
+          node .github/scripts/validate-registration.mjs "$RUNNER_TEMP/base.md" "$RUNNER_TEMP/head.md"
+
+      - name: Mesclar inscrição
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          result="$(gh api --method PUT "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/merge" --field merge_method=squash --field commit_title="chore: add participant")"
+          jq -e '.merged == true' <<<"$result" >/dev/null
