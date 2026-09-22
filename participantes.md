@@ -3,5 +3,5 @@
 Adicione seu e-mail ao final da tabela para se inscrever.
 
 | E-mail |
-| --- | 
+| --- |
 | exemplo@wilcorrea.dev |
