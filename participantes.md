@@ -6,3 +6,4 @@ Adicione seu e-mail ou usuário do Telegram ao final da tabela para se inscrever
 | --- |
 | exemplo@wilcorrea.dev |
 | marcosoliveirasamcro@gmail.com |
+| @kalecio |
