@@ -8,3 +8,4 @@ Adicione seu e-mail ou usuário do Telegram ao final da tabela para se inscrever
 | marcosoliveirasamcro@gmail.com |
 | @kalecio |
 |rodrigoliveira328@hotmail.com|
+|damsouza00@hotmail.com|
