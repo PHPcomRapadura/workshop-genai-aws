@@ -10,3 +10,4 @@ Adicione seu e-mail ou usuário do Telegram ao final da tabela para se inscrever
 |rodrigoliveira328@hotmail.com|
 |damsouza00@hotmail.com|
 |manuelpauloafonso29@gmail.com|
+| gmarcos38@gmail.com |
