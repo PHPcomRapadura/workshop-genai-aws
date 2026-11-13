@@ -13,3 +13,4 @@ Adicione seu e-mail ou usuário do Telegram ao final da tabela para se inscrever
 | gmarcos38@gmail.com |
 | boaventuraestevao08@gmail.com |
 | contatoruansales@gmail.com |
+| carloslcj10@gmail.com |
